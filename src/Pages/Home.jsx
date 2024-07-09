@@ -1,12 +1,13 @@
-import React from 'react'
-import Navbar from './Navbar'
-
+import React from "react";
+import Navbar from "../Components/Navbar";
+import SimpleAlert from "../Components/Alert";
 const Home = () => {
   return (
     <div>
-      <Navbar/>
+      <SimpleAlert />
+      <Navbar />
     </div>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;
