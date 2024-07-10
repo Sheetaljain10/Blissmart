@@ -4,7 +4,7 @@ import styled from "styled-components";
 
 const Container = styled.div`
   height: 60px;
-  // background-color: #d7dbf7;
+  background-color: #efefef;
 `;
 
 const Wrapper = styled.div`
@@ -16,12 +16,10 @@ const Wrapper = styled.div`
 
 const Left = styled.div`
   flex: 1; //width:33.3333%
-  display: flex;
-  align-items: center; //Vertically
 `;
 
 const Language = styled.span`
-  font-size: 14;
+  font-size: 14px;
   cursor: pointer;
 `;
 
@@ -29,17 +27,20 @@ const Searchcontainer = styled.div`
   border: 0.5px solid lightgray;
   display: flex;
   align-items: center;
+  padding: 2px;
+  border-radius: 3px;
   margin-left: 25px;
-  padding: 5px;
 `;
 
-const INPUT = styled.input`
+const Input = styled.input`
   border: none;
 `;
 
 const Mid = styled.div`
   flex: 1; //equal-ratio
-  text-align: center;
+  display: flex;
+  align-items: center; //Vertically
+  justify-content: flex-end;
 `;
 
 const Logo = styled.h1`
@@ -54,22 +55,32 @@ const Right = styled.div`
 `;
 
 const Menuitem = styled.div`
-  fontsize: 14;
+  fontsize: 14px;
   cursor: pointer;
   margin-left: 25px;
+  &:hover {
+    color: #3054e6;
+    font-weight: bold;
+  }
 `;
 const Navbar = () => {
   return (
     <Container>
       <Wrapper>
         <Left>
-          <Language>EN</Language>
-          <Searchcontainer>
-            <Search style={{ color: "grey", fontSize: 16 }} />
-          </Searchcontainer>
+          <Logo>Blissmart</Logo>
         </Left>
         <Mid>
-          <Logo>Blissmart</Logo>
+          <Language>EN</Language>
+          <Searchcontainer>
+            <Input />
+            <Search
+              style={{
+                color: "grey",
+                fontSize: 16,
+              }}
+            />
+          </Searchcontainer>
         </Mid>
         <Right>
           <Menuitem>REGISTER</Menuitem>
