@@ -1,8 +1,9 @@
+import { Badge } from "@mui/material";
 import {
-  Badge,
   ShoppingCartOutlined,
   LocalMallOutlined,
   Search,
+  ShoppingBagOutlined,
 } from "@mui/icons-material";
 import React from "react";
 import styled from "styled-components";
@@ -68,7 +69,7 @@ const Menuitem = styled.div`
     font-weight: bold;
   }
 `;
-const Navbar = () => {
+const Navbar = ({ setShowSignup }) => {
   return (
     <Container>
       <Wrapper>
@@ -90,11 +91,11 @@ const Navbar = () => {
         </Mid>
         <Right>
           <Menuitem>ABOUT US</Menuitem>
-          <Menuitem>REGISTER</Menuitem>
+          <Menuitem onClick={() => setShowSignup(true)}>REGISTER</Menuitem>
           <Menuitem>SIGN IN</Menuitem>
           <Menuitem>
             <Badge badgeContent={4} color="primary">
-              <LocalMallOutlined />
+              <ShoppingBagOutlined />
             </Badge>
           </Menuitem>
         </Right>

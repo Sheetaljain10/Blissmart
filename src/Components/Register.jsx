@@ -9,7 +9,7 @@ import {
   Avatar,
   Box,
 } from "@mui/material";
-import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { Close, Visibility, VisibilityOff } from "@mui/icons-material";
 import styled from "@emotion/styled";
 
 const FormContainer = styled(Box)`
@@ -22,6 +22,10 @@ const FormContainer = styled(Box)`
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 `;
 
+const StyledTitle = styled.h2`
+  padding: 10px;
+`;
+
 const StyledTextField = styled(TextField)`
   margin: 10px 0;
   width: 100%;
@@ -32,12 +36,13 @@ const UploadButton = styled(IconButton)`
 `;
 
 const SignupButton = styled(Button)`
-  background-color: red;
-  color: white;
+  background-color: white;
+  color: black;
   margin-top: 20px;
+  border: 1px solid black;
 
   &:hover {
-    background-color: darkred;
+    background-color: #b6f0e4;
   }
 `;
 
@@ -45,7 +50,7 @@ const LoginLink = styled(Typography)`
   margin-top: 20px;
 `;
 
-const Register = () => {
+const Register = ({ setShowSignup }) => {
   const [showPassword, setShowPassword] = React.useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = React.useState(false);
 
@@ -55,24 +60,37 @@ const Register = () => {
 
   return (
     <Container
-      maxWidth="xs"
-      sx={{ position: "absolute", zindex: 1, backgroundcolor:"", display: "grid" }}
+      sx={{
+        position: "fixed",
+        top: "1%",
+        left: 0,
+        zIndex: 1000,
+        backgroundColor: "#00000090",
+        display: "grid",
+        marginLeft: "10%",
+      }}
     >
       <FormContainer
         sx={{
+          position: "relative",
           placeSelf: "center",
           width: "max(23vw, 330px)",
-          color: "black",
+          color: "#808080",
           backgroundColor: "white",
           display: "flex",
           flexDirection: "column",
-          gap: 25,
+          gap: "5px",
           padding: "25px 30px",
-          borderRadius: 8,
-          fontSize: 14,
+          borderRadius: "8px",
+          fontSize: "14px",
           animation: "fadeIn 0.5s",
         }}
       >
+        <Close
+          onClick={() => setShowSignup(false)}
+          style={{ cursor: "pointer", justifyContent: "flex-end" }}
+        />
+        <StyledTitle>SIGN UP HERE..</StyledTitle>
         <Avatar
           src="upload_photo_url"
           alt="Upload Photo"

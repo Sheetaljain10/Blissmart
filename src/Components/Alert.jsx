@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Alert from "@mui/material/Alert";
 import CheckIcon from "@mui/icons-material/Check";
 
-export default function SimpleAlert() {
+export default function SimpleAlert(props) {
   const [showAlert, setShowAlert] = useState(true);
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -14,8 +14,12 @@ export default function SimpleAlert() {
   return (
     <>
       {showAlert && (
-        <Alert icon={<CheckIcon fontSize="inherit" />} severity="success">
-          ENJOY THE BEAUTY OF SHOPPING
+        <Alert
+          icon={<CheckIcon fontSize="inherit" />}
+          severity="success"
+          style={{ justifyContent: "center" }}
+        >
+          {props.message}
         </Alert>
       )}
     </>
