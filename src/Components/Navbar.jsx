@@ -1,4 +1,9 @@
-import { Badge, LocalMallOutlined, Search } from "@mui/icons-material";
+import {
+  Badge,
+  ShoppingCartOutlined,
+  LocalMallOutlined,
+  Search,
+} from "@mui/icons-material";
 import React from "react";
 import styled from "styled-components";
 
@@ -73,16 +78,18 @@ const Navbar = () => {
         <Mid>
           <Language>EN</Language>
           <Searchcontainer>
-            <Input />
+            <Input placeholder="Searching for ..." />
             <Search
               style={{
                 color: "grey",
                 fontSize: 16,
+                marginLeft: 3,
               }}
             />
           </Searchcontainer>
         </Mid>
         <Right>
+          <Menuitem>ABOUT US</Menuitem>
           <Menuitem>REGISTER</Menuitem>
           <Menuitem>SIGN IN</Menuitem>
           <Menuitem>
