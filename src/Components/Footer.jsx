@@ -8,10 +8,12 @@ import {
   Twitter,
 } from "@mui/icons-material";
 import styled from "styled-components";
+import { mobile } from "../responsive";
 
 const Container = styled.div`
   display: flex;
   background-color: #efefef;
+  ${mobile({ flexDirection: "column" })}
 `;
 
 const Left = styled.div`
@@ -42,6 +44,10 @@ const SocialIcon = styled.div`
   align-items: center;
   justify-content: center;
   margin-right: 20px;
+  &:hover {
+    border: 3px solid black;
+    cursor: grab;
+  }
 `;
 
 const Center = styled.div`
@@ -89,6 +95,10 @@ const ContactLink = styled.a`
 
 const Payment = styled.img`
   width: 50%;
+  &:hover {
+    color: blue;
+    cursor: not-allowed;
+  }
 `;
 
 const Footer = () => {
@@ -121,12 +131,8 @@ const Footer = () => {
         <List>
           <ListItem>Home</ListItem>
           <ListItem>Cart</ListItem>
-          <ListItem>Man Fashion</ListItem>
-          <ListItem>Woman Fashion</ListItem>
-          <ListItem>Accessories</ListItem>
           <ListItem>My Account</ListItem>
           <ListItem>Order Tracking</ListItem>
-          <ListItem>Wishlist</ListItem>
           <ListItem>Wishlist</ListItem>
           <ListItem>Terms</ListItem>
         </List>
@@ -135,7 +141,7 @@ const Footer = () => {
         <Title>GET IN TOUCH</Title>
         <ContactItem>
           <Room style={{ marginRight: "10px" }} />
-          <ContactLink href="geo:12.954880952379103, 77.57319555932939">
+          <ContactLink href="https://www.google.com/maps?q=12.953704712280727, 77.57316340909696">
             KJA , Bengaluru - 560004
           </ContactLink>
         </ContactItem>

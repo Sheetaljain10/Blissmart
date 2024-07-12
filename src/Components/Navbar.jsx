@@ -7,10 +7,14 @@ import {
 } from "@mui/icons-material";
 import React from "react";
 import styled from "styled-components";
+import { mobile } from "../responsive";
 
 const Container = styled.div`
   height: 60px;
   background-color: #efefef;
+  ${mobile({
+    height: "50px",
+  })};
 `;
 
 const Wrapper = styled.div`
@@ -18,6 +22,7 @@ const Wrapper = styled.div`
   display: flex;
   justify-content: space-between; //Horizontally
   align-items: center;
+  ${mobile({ padding: "10px 0px" })};
 `;
 
 const Left = styled.div`
@@ -27,6 +32,7 @@ const Left = styled.div`
 const Language = styled.span`
   font-size: 14px;
   cursor: pointer;
+  ${mobile({ display: "none" })};
 `;
 
 const Searchcontainer = styled.div`
@@ -40,6 +46,7 @@ const Searchcontainer = styled.div`
 
 const Input = styled.input`
   border: none;
+  ${mobile({ fontSize: "10px" })}
 `;
 
 const Mid = styled.div`
@@ -51,6 +58,7 @@ const Mid = styled.div`
 
 const Logo = styled.h1`
   font-weight: bold;
+  ${mobile(` fontSize: "24px"`)}
 `;
 
 const Right = styled.div`
@@ -58,6 +66,7 @@ const Right = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-end;
+  ${mobile({ flex: 2, justifyContent: "center" })}
 `;
 
 const Menuitem = styled.div`
@@ -68,8 +77,9 @@ const Menuitem = styled.div`
     color: #3054e6;
     font-weight: bold;
   }
+  ${mobile(`fontSize: "12px", marginLeft: "10px" `)}
 `;
-const Navbar = ({ setShowSignup }) => {
+const Navbar = (props) => {
   return (
     <Container>
       <Wrapper>
@@ -91,8 +101,10 @@ const Navbar = ({ setShowSignup }) => {
         </Mid>
         <Right>
           <Menuitem>ABOUT US</Menuitem>
-          <Menuitem onClick={() => setShowSignup(true)}>REGISTER</Menuitem>
-          <Menuitem>SIGN IN</Menuitem>
+          <Menuitem onClick={() => props.setShowSignup(true)}>
+            REGISTER
+          </Menuitem>
+          <Menuitem onClick={() => props.setShowLogin(true)}>CONNECT</Menuitem>
           <Menuitem>
             <Badge badgeContent={4} color="primary">
               <ShoppingBagOutlined />

@@ -7,13 +7,16 @@ import Newsletter from "../Components/Newsletter";
 import Products from "../Components/Products";
 import Slider from "../Components/Slider";
 import Register from "../Components/Register";
+import Login from "../Components/Login";
 const Home = () => {
   const [showSignup, setShowSignup] = useState(false);
+  const [showLogin, setShowLogin] = useState(false);
   return (
     <div>
       {showSignup ? <Register setShowSignup={setShowSignup} /> : <></>}
+      {showLogin ? <Login setShowLogin={setShowLogin} /> : <></>}
       <SimpleAlert message="ENJOY THE BEAUTY OF SHOPPING" />
-      <Navbar setShowSignup={setShowSignup} />
+      <Navbar setShowSignup={setShowSignup} setShowLogin={setShowLogin} />
       <Slider />
       <Categories />
       <Products />

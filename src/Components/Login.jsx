@@ -11,6 +11,7 @@ import {
 } from "@mui/material";
 import { Close, Visibility, VisibilityOff } from "@mui/icons-material";
 import styled from "@emotion/styled";
+import { mobile } from "../responsive";
 
 const FormContainer = styled(Box)`
   display: flex;
@@ -20,6 +21,7 @@ const FormContainer = styled(Box)`
   background-color: #f9f9f9;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  ${mobile({ width: "75%" })}
 `;
 
 const StyledTitle = styled.h2`
@@ -60,8 +62,8 @@ const Stylespan = styled.span`
   }
 `;
 
-const Register = ({ setShowSignup }) => {
-  const [currState, setCurrState] = React.useState("Sign up");
+const Login = (props) => {
+  const [currState, setCurrState] = React.useState("Log in");
   const [showPassword, setShowPassword] = React.useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = React.useState(false);
 
@@ -101,7 +103,7 @@ const Register = ({ setShowSignup }) => {
       >
         <Close
           onClick={() => {
-            setShowSignup(false);
+            props.setShowLogin(false);
           }}
           style={{ cursor: "pointer", justifyContent: "flex-end" }}
         />
@@ -196,4 +198,4 @@ const Register = ({ setShowSignup }) => {
   );
 };
 
-export default Register;
+export default Login;
