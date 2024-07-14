@@ -12,3 +12,5 @@ Currently, two official plugins are available:
 2] npm i styled-components
 3] npm install @mui/material @mui/styled-engine-sc styled-components
 4] npm install @mui/icons-material
+5] npm i react-router-dom
+6] npm install redux react-redux

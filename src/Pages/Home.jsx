@@ -8,7 +8,7 @@ import Products from "../Components/Products";
 import Slider from "../Components/Slider";
 import Register from "../Components/Register";
 import Login from "../Components/Login";
-const Home = () => {
+const Home = (props) => {
   const [showSignup, setShowSignup] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
   return (
