@@ -14,3 +14,5 @@ Currently, two official plugins are available:
 4] npm install @mui/icons-material
 5] npm i react-router-dom
 6] npm install redux react-redux
+7] npm i axios
+8] npm install @reduxjs/toolkit react-redux
