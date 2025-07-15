@@ -14,12 +14,13 @@ export const isTokenValid = () => {
 };
 
 export const logoutUser = () => {
+
+  localStorage.removeItem("token");
   const duration = 3000;
   toast.warn("Session expired. Please log in again.", {
     autoClose: duration,
   });
 
-  localStorage.removeItem("token");
   setTimeout(() => {
     window.location.reload(); // or navigate to login page
   }, duration);

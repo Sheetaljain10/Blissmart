@@ -1,4 +1,5 @@
 import { API_BASE_URL } from "../src/config/Config"
+import axios from "axios";
 
 const BASE_URL = API_BASE_URL;
 const user = JSON.parse(localStorage.getItem("persist:root"))?.user;
