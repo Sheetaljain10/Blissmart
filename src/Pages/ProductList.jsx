@@ -4,6 +4,8 @@ import SimpleAlert from "../Components/Alert";
 import Products from "../Components/Products";
 import Newsletter from "../Components/Newsletter";
 import Footer from "../Components/Footer";
+import Login from "../Components/Login";
+import Register from "../Components/Register";
 import { mobile } from "../responsive";
 import { useLocation } from "react-router-dom";
 import { useState } from "react";
@@ -40,11 +42,17 @@ const Select = styled.select`
 `;
 const Option = styled.option``;
 
-const ProductList = () => {
+const ProductList = (props) => {
+
+  //changes
+  const token = localStorage.getItem("token");
+
   const location = useLocation();
   const cat = location.pathname.split("/")[2];
   const [filters, setFilters] = useState({});
   const [sort, setSorts] = useState("");
+  const [showSignup, setShowSignup] = useState(false);
+  const [showLogin, setShowLogin] = useState(false);
 
   const handleFilters = (e) => {
     const val = e.target.value;
@@ -56,7 +64,13 @@ const ProductList = () => {
 
   return (
     <Container>
-      <Navbar />
+      {showSignup ? <Register setShowSignup={setShowSignup} /> : <></>}
+      {showLogin ? <Login setShowLogin={setShowLogin} /> : <></>}
+      <Navbar
+        setShowSignup={setShowSignup}
+        setShowLogin={setShowLogin}
+        isUser={props.isUser}
+      />
       <SimpleAlert message="Filter and sort for ur ease" />
       <Title>{cat}</Title>
       <FilterContainer>
@@ -93,7 +107,11 @@ const ProductList = () => {
           </Select>
         </Filter>
       </FilterContainer>
-      <Products cat={cat} filters={filters} sort={sort} />
+      {/* {token ? ( */}
+        <Products cat={cat} filters={filters} sort={sort} />
+      {/* // ) : (
+      //   <p>Please login to view products.</p>
+      // )} */}
       <Newsletter />
       <Footer />
     </Container>

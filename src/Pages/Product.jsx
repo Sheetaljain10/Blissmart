@@ -3,11 +3,15 @@ import styled from "styled-components";
 import Footer from "../Components/Footer";
 import Navbar from "../Components/Navbar";
 import Newsletter from "../Components/Newsletter";
+import Login from "../Components/Login";
+import Register from "../Components/Register";
 import { mobile } from "../responsive";
 import SimpleAlert from "../Components/Alert";
 import { useLocation } from "react-router-dom";
 import { publicRequest } from "../requestMethods";
 import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { addProduct } from "../Redux/cartRedux";
 
 const Container = styled.div``;
 
@@ -118,19 +122,21 @@ const Button = styled.button`
   }
 `;
 
-const Product = () => {
+const Product = (props) => {
   const location = useLocation();
   const id = location.pathname.split("/")[2];
   const [product, setProduct] = useState({});
   const [quantity, setQuantity] = useState(1);
   const [color, setColor] = useState("");
   const [size, setSize] = useState("");
-
+  const dispatch = useDispatch();
+  const [showSignup, setShowSignup] = useState(false);
+  const [showLogin, setShowLogin] = useState(false);
 
   useEffect(() => {
     const getProduct = async () => {
       try {
-        const res = await publicRequest.get("/products/find/" + id);
+        const res = await publicRequest.get("/api/products/find/" + id);
         setProduct(res.data);
       } catch {}
     };
@@ -145,9 +151,20 @@ const Product = () => {
     }
   };
 
+  const handleClick = () => {
+    //update cart
+    dispatch(addProduct({ ...product, quantity, color, size }));
+  };
+
   return (
     <Container>
-      <Navbar />
+      {showSignup ? <Register setShowSignup={setShowSignup} /> : <></>}
+      {showLogin ? <Login setShowLogin={setShowLogin} /> : <></>}
+      <Navbar
+        setShowSignup={setShowSignup}
+        setShowLogin={setShowLogin}
+        isUser={props.isUser}
+      />
       <SimpleAlert message="OHH!! Great choice" />
       <Wrapper>
         <ImgContainer>
@@ -178,7 +195,7 @@ const Product = () => {
               <Amount>{quantity}</Amount>
               <Add onClick={() => handleQuantity("inc")} />
             </AmountContainer>
-            <Button>ADD TO CART</Button>
+            <Button onClick={handleClick}>ADD TO CART</Button>
           </AddContainer>
         </InfoContainer>
       </Wrapper>

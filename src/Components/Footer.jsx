@@ -147,12 +147,12 @@ const Footer = () => {
         </ContactItem>
         <ContactItem>
           <Phone style={{ marginRight: "10px" }} />
-          <ContactLink href="tel:+912345678">+91 23451 67890</ContactLink>
+          <ContactLink href="tel:+911234567890">+91 12345 67890</ContactLink>
         </ContactItem>
         <ContactItem>
           <MailOutline style={{ marginRight: "10px" }} />
-          <ContactLink href="mailto:contact@lama.dev">
-            contact@lama.dev
+          <ContactLink href="mailto:contact@blissmart.com">
+            contact@blissmart.com
           </ContactLink>
         </ContactItem>
         <Payment src="https://i.ibb.co/Qfvn4z6/payment.png" />

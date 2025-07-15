@@ -1,4 +1,5 @@
 import React from "react";
+import { useState } from "react";
 import {
   TextField,
   Button,
@@ -12,6 +13,10 @@ import {
 import { Close, Visibility, VisibilityOff } from "@mui/icons-material";
 import styled from "@emotion/styled";
 import { mobile } from "../responsive";
+import { useDispatch, useSelector } from "react-redux";
+import axios from "../api/axiosConfig";
+import { toast } from "react-toastify";
+import { API_BASE_URL } from "../config/Config";
 
 const FormContainer = styled(Box)`
   display: flex;
@@ -37,7 +42,7 @@ const UploadButton = styled(IconButton)`
   margin: 10px 0;
 `;
 
-const SignupButton = styled(Button)`
+const ActionButton = styled(Button)`
   background-color: white;
   color: black;
   margin-top: 20px;
@@ -46,6 +51,10 @@ const SignupButton = styled(Button)`
 
   &:hover {
     background-color: #b6f0e4;
+  }
+  &:disabled {
+    color: green;
+    cursor: not-allowed;
   }
 `;
 
@@ -62,7 +71,18 @@ const Stylespan = styled.span`
   }
 `;
 
+const Error = styled.span`
+  color: red;
+`;
+
 const Login = (props) => {
+  //changes
+  const [localError, setLocalError] = useState(null);
+
+  const [email, setemail] = useState("");
+  const [password, setPassword] = useState("");
+  const dispatch = useDispatch();
+  const { isFetching, error } = useSelector((state) => state.user);
   const [currState, setCurrState] = React.useState("Log in");
   const [showPassword, setShowPassword] = React.useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = React.useState(false);
@@ -70,6 +90,37 @@ const Login = (props) => {
   const handleClickShowPassword = () => setShowPassword(!showPassword);
   const handleClickShowConfirmPassword = () =>
     setShowConfirmPassword(!showConfirmPassword);
+
+  const handleClick = (e) => {
+    e.preventDefault();
+    Login(dispatch, { email, password });
+  };
+
+  const handleClose = (e) => {
+    props.setShowLogin(false);
+  };
+
+  const handleLogin = async () => {
+    try {
+      const res = await axios.post("/api/auth/login", {
+        email,
+        password,
+      });
+
+      const token = res.data;
+
+      // Save JWT to localStorage or cookie
+      localStorage.setItem("token", token);
+      toast.success("Login successful!");
+
+      props.setIsUser(true);
+
+      // Redirect or update context/state
+      props.setShowLogin(false);
+    } catch (err) {
+      setLocalError(err.response?.data?.message || "Invalid credentials");
+    }
+  };
 
   return (
     <Container
@@ -84,6 +135,7 @@ const Login = (props) => {
         display: "grid",
         marginLeft: "10%",
       }}
+      onClick={handleClose}
     >
       <FormContainer
         sx={{
@@ -100,11 +152,10 @@ const Login = (props) => {
           fontSize: "14px",
           animation: "fadeIn 0.5s",
         }}
+        onClick={(e) => e.stopPropagation()}
       >
         <Close
-          onClick={() => {
-            props.setShowLogin(false);
-          }}
+          onClick={handleClose}
           style={{ cursor: "pointer", justifyContent: "flex-end" }}
         />
         <StyledTitle>{currState} Here..</StyledTitle>
@@ -126,7 +177,11 @@ const Login = (props) => {
           </>
         )}
 
-        <StyledTextField label="Email" variant="outlined" />
+        <StyledTextField
+          label="Email"
+          variant="outlined"
+          onChange={(e) => setemail(e.target.value)}
+        />
 
         <StyledTextField
           label="Password"
@@ -141,6 +196,7 @@ const Login = (props) => {
               </InputAdornment>
             ),
           }}
+          onChange={(e) => setPassword(e.target.value)}
         />
 
         {currState === "Log in" ? (
@@ -166,11 +222,19 @@ const Login = (props) => {
 
         {currState === "Log in" ? (
           <>
-            <SignupButton variant="contained">Log In</SignupButton>
+            <ActionButton
+              variant="contained"
+              onClick={handleLogin}
+              disabled={isFetching}
+              // disabled={false}
+            >
+              Log In
+            </ActionButton>
+            {localError && <Typography color="error">{localError}</Typography>}
           </>
         ) : (
           <>
-            <SignupButton variant="contained">Sign Up</SignupButton>
+            <ActionButton variant="contained">Sign Up</ActionButton>
           </>
         )}
 

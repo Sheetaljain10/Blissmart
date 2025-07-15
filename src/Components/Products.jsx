@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { popularProducts } from "../data";
 import Product from "./Product";
 import { useEffect, useState } from "react";
+import axios from "../api/axiosConfig";
 
 const Container = styled.div`
   padding: 20px;
@@ -10,20 +11,25 @@ const Container = styled.div`
   justify-content: space-between;
 `;
 
-const Products = ({cat,filters,sort}) => {
+const Products = ({ cat, filters, sort }) => {
+  //changes
+  const [error, setError] = useState(null);
+
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
 
   useEffect(() => {
+
     const getProducts = async () => {
       try {
         const res = await axios.get(
-          cat
-            ? `http://localhost:5000/api/products?category=${cat}`
-            : "http://localhost:5000/api/products"
+          cat ? `/api/products?category=${cat}` : "/api/products"
         );
         setProducts(res.data);
-      } catch (err) {}
+      } catch (err) {
+        console.error("Failed to fetch products:", err);
+        setError("Unauthorized or token expired");
+      }
     };
     getProducts();
   }, [cat]);
@@ -33,7 +39,8 @@ const Products = ({cat,filters,sort}) => {
       setFilteredProducts(
         products.filter((item) =>
           Object.entries(filters).every(([key, value]) =>
-            item[key].includes(value)
+            // item[key].includes(value)
+            item[key]?.toString().toLowerCase().includes(value.toLowerCase())
           )
         )
       );

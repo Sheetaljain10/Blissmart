@@ -9,17 +9,34 @@ import Slider from "../Components/Slider";
 import Register from "../Components/Register";
 import Login from "../Components/Login";
 const Home = (props) => {
+
+  //changes
   const [showSignup, setShowSignup] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
   return (
     <div>
       {showSignup ? <Register setShowSignup={setShowSignup} /> : <></>}
-      {showLogin ? <Login setShowLogin={setShowLogin} /> : <></>}
+      {showLogin ? (
+        <Login setShowLogin={setShowLogin} setIsUser={props.setIsUser} />
+      ) : (
+        <></>
+      )}
       <SimpleAlert message="ENJOY THE BEAUTY OF SHOPPING" />
-      <Navbar setShowSignup={setShowSignup} setShowLogin={setShowLogin} />
+      <Navbar
+        setShowSignup={setShowSignup}
+        setShowLogin={setShowLogin}
+        isUser={props.isUser}
+        setIsUser={props.setIsUser}
+      />
       <Slider />
       <Categories />
-      <Products />
+      {props.isUser ? (
+        <Products />
+      ) : (
+        <p style={{ textAlign: "center", fontSize: "18px", margin: "20px 0" }}>
+          Please login to view products.
+        </p>
+      )}
       <Newsletter />
       <Footer />
     </div>

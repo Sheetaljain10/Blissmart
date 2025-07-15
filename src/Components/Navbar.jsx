@@ -8,6 +8,11 @@ import {
 import React from "react";
 import styled from "styled-components";
 import { mobile } from "../responsive";
+import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import { isTokenValid, logoutUser } from "../utils/Logout";
+import { useState, useEffect } from "react";
+import { toast } from "react-toastify";
 
 const Container = styled.div`
   height: 60px;
@@ -80,11 +85,35 @@ const Menuitem = styled.div`
   ${mobile(`fontSize: "12px", marginLeft: "10px" `)}
 `;
 const Navbar = (props) => {
+  const quantity = useSelector((state) => state.cart.quantity);
+
+  //CHANGES
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (!isTokenValid()) {
+        localStorage.removeItem("token");
+        props.setIsUser(false); // update parent login state
+        toast.warn("Session expired. Please log in again.");
+      }
+    }, 60000); // Check every 60 sec
+
+    return () => clearInterval(interval);
+  }, []);
+
+  const handleConnectClick = () => {
+    if (props.isUser) {
+      logoutUser();
+      props.setIsUser(false);
+    } else {
+      props.setShowLogin(true);
+    }
+  };
+
   return (
     <Container>
       <Wrapper>
         <Left>
-          <Logo>Blissmart</Logo>
+          <Logo>BLISSMART</Logo>
         </Left>
         <Mid>
           <Language>EN</Language>
@@ -101,15 +130,22 @@ const Navbar = (props) => {
         </Mid>
         <Right>
           <Menuitem>ABOUT US</Menuitem>
-          <Menuitem onClick={() => props.setShowSignup(true)}>
+          <Menuitem onClick={() => props.setShowSignup(!props.isUser)}>
             REGISTER
           </Menuitem>
-          <Menuitem onClick={() => props.setShowLogin(true)}>CONNECT</Menuitem>
-          <Menuitem>
-            <Badge badgeContent={4} color="primary">
-              <ShoppingBagOutlined />
-            </Badge>
+          {/* <Menuitem onClick={() => props.setShowLogin(!props.isUser)}>
+            CONNECT
+          </Menuitem> */}
+          <Menuitem onClick={handleConnectClick}>
+            {props.isUser ? "LOGOUT" : "CONNECT"}
           </Menuitem>
+          <Link to="/cart">
+            <Menuitem>
+              <Badge badgeContent={quantity} color="primary">
+                <ShoppingCartOutlined />
+              </Badge>
+            </Menuitem>
+          </Link>
         </Right>
       </Wrapper>
     </Container>

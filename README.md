@@ -16,3 +16,8 @@ Currently, two official plugins are available:
 6] npm install redux react-redux
 7] npm i axios
 8] npm install @reduxjs/toolkit react-redux
+9] npm i redux
+10] npm i react-stripe-checkout
+11] npm install redux-persist
+12] npm install @mui/x-data-grid (*)
+

@@ -1,10 +1,6 @@
-import axios from "axios";
+import { API_BASE_URL } from "../src/config/Config"
 
-const BASE_URL = "http://localhost:5000/api/";
-// const TOKEN =
-//   JSON.parse(JSON.parse(localStorage.getItem("persist:root")).user).currentUser
-//     .accessToken || "";
-
+const BASE_URL = API_BASE_URL;
 const user = JSON.parse(localStorage.getItem("persist:root"))?.user;
 const currentUser = user && JSON.parse(user).currentUser;
 const TOKEN = currentUser?.accessToken;

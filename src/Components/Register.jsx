@@ -11,6 +11,8 @@ import {
 } from "@mui/material";
 import { Close, Visibility, VisibilityOff } from "@mui/icons-material";
 import styled from "@emotion/styled";
+import axios from "../api/axiosConfig"; // custom axios with token support
+import { useState } from "react";
 
 const FormContainer = styled(Box)`
   display: flex;
@@ -61,13 +63,71 @@ const Stylespan = styled.span`
 `;
 
 const Register = ({ setShowSignup }) => {
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
+
+  //changes
+  const [image, setImage] = useState(null);
+  const [profileImageUrl, setProfileImageUrl] = useState("");
+
+  //changes
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
   const [currState, setCurrState] = React.useState("Sign up");
   const [showPassword, setShowPassword] = React.useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = React.useState(false);
 
+  const [error, setError] = useState("");
+
   const handleClickShowPassword = () => setShowPassword(!showPassword);
   const handleClickShowConfirmPassword = () =>
     setShowConfirmPassword(!showConfirmPassword);
+
+  const handleClose = (e) => {
+    setShowSignup(false);
+  };
+
+  const handleImageUpload = async (e) => {
+    const file = e.target.files[0];
+    setImage(file);
+
+    const formData = new FormData();
+    formData.append("file", file);
+
+    try {
+      const res = await axios.post("/api/auth/upload-image", formData);
+      setProfileImageUrl(res.data.url); // use this for registration
+    } catch (err) {
+      setError("Image upload failed");
+    }
+  };
+
+  const handleRegister = async () => {
+    if (form.password !== form.confirmPassword) {
+      return setError("Passwords do not match");
+    }
+
+    try {
+      const payload = {
+        name: form.name,
+        email: form.email,
+        password: form.password,
+        photoUrl: profileImageUrl,
+      };
+
+      await axios.post("/api/auth/register", payload);
+      alert("User registered successfully!");
+      setShowSignup(false);
+    } catch (err) {
+      setError(err.response?.data?.message || "Registration failed");
+    }
+  };
 
   return (
     <Container
@@ -82,6 +142,7 @@ const Register = ({ setShowSignup }) => {
         display: "grid",
         marginLeft: "10%",
       }}
+      onClick={handleClose}
     >
       <FormContainer
         sx={{
@@ -98,11 +159,10 @@ const Register = ({ setShowSignup }) => {
           fontSize: "14px",
           animation: "fadeIn 0.5s",
         }}
+        onClick={(e) => e.stopPropagation()}
       >
         <Close
-          onClick={() => {
-            setShowSignup(false);
-          }}
+          onClick={handleClose}
           style={{ cursor: "pointer", justifyContent: "flex-end" }}
         />
         <StyledTitle>{currState} Here..</StyledTitle>
@@ -111,24 +171,44 @@ const Register = ({ setShowSignup }) => {
         ) : (
           <>
             <Avatar
-              src="upload_photo_url"
+              src={profileImageUrl}
               alt="Upload Photo"
               sx={{ width: 80, height: 80 }}
             />
             <UploadButton component="label">
               Upload Photo
-              <input hidden accept="image/*" type="file" />
+              <input
+                hidden
+                // accept="image/*"
+                type="file"
+                onChange={handleImageUpload}
+              />
             </UploadButton>
 
-            <StyledTextField label="Name" variant="outlined" />
+            <StyledTextField
+              label="Name"
+              variant="outlined"
+              name="name" //changes
+              value={form.name} //changes
+              onChange={handleChange} //changes
+            />
           </>
         )}
 
-        <StyledTextField label="Email" variant="outlined" />
+        <StyledTextField
+          label="Email"
+          variant="outlined"
+          name="email"
+          value={form.email} //changes
+          onChange={handleChange} //changes
+        />
 
         <StyledTextField
           label="Password"
           variant="outlined"
+          name="password"
+          value={form.password} //changes
+          onChange={handleChange} //changes
           type={showPassword ? "text" : "password"}
           InputProps={{
             endAdornment: (
@@ -148,6 +228,9 @@ const Register = ({ setShowSignup }) => {
             <StyledTextField
               label="Confirm Password"
               variant="outlined"
+              name="confirmPassword"
+              value={form.confirmPassword} //changes
+              onChange={handleChange} //changes
               type={showConfirmPassword ? "text" : "password"}
               InputProps={{
                 endAdornment: (
@@ -162,13 +245,17 @@ const Register = ({ setShowSignup }) => {
           </>
         )}
 
+        {error && <Typography color="error">{error}</Typography>}
+
         {currState === "Log in" ? (
           <>
             <SignupButton variant="contained">Log In</SignupButton>
           </>
         ) : (
           <>
-            <SignupButton variant="contained">Sign Up</SignupButton>
+            <SignupButton variant="contained" onClick={handleRegister}>
+              Sign Up
+            </SignupButton>
           </>
         )}
 
